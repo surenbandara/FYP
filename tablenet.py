@@ -32,10 +32,10 @@ inputs = Input(shape=inputShape, name='input')
 model_ResNet101_conv = ResNet101(input_tensor=inputs,weights='imagenet', include_top=False , pooling=None)
 model_ResNet101_conv.summary()
 
-block3_pool=model_ResNet101_conv.get_layer('block3_pool').output
-print(block3_pool.get_shape)
-block4_pool=model_ResNet101_conv.get_layer('block4_pool').output
-print(block4_pool.get_shape)
+conv4_block2_1_conv=model_ResNet101_conv.get_layer('conv4_block2_1_conv').output
+print(conv4_block2_1_conv.get_shape)
+conv3_block3_2_conv=model_ResNet101_conv.get_layer('conv3_block3_2_conv').output
+print(conv3_block3_2_conv.get_shape)
 
 x = model_ResNet101_conv.output
 x = Conv2D(512,(1,1),activation = "relu", name = "conv2d_1")(x)
@@ -52,10 +52,10 @@ def decoder_row(input_layer):
   conv8_row = Conv2D(512, (1, 1), activation = 'relu', name='conv8_row')(conv7_row)
   conv8_row = UpSampling2D(size=(2, 2))(conv8_row)
 
-  concat1=Concatenate()([conv8_row,block4_pool])
+  concat1=Concatenate()([conv8_row,conv3_block3_2_conv])
   concat1 = UpSampling2D(size=(2, 2))(concat1)
 
-  concat2=Concatenate()([concat1,block3_pool])
+  concat2=Concatenate()([concat1,conv4_block2_1_conv])
   concat2 = UpSampling2D(size=(2,2),name='row_op')(concat2)
 
   final = UpSampling2D(size=(2,2))(concat2)
@@ -74,10 +74,10 @@ def decoder_column(input_layer):
   conv8_col = Conv2D(512, (1, 1), activation = 'relu', name='conv8_col')(conv7_col)
   conv8_col = UpSampling2D(size=(2, 2))(conv8_col)
 
-  concat1=Concatenate()([conv8_col,block4_pool])
+  concat1=Concatenate()([conv8_col,conv3_block3_2_conv])
   concat1 = UpSampling2D(size=(2, 2))(concat1)
 
-  concat2=Concatenate()([concat1,block3_pool])
+  concat2=Concatenate()([concat1,conv4_block2_1_conv])
   concat2 = UpSampling2D(size=(2,2),name='column_op')(concat2)
 
   final = UpSampling2D(size=(2,2))(concat2)
