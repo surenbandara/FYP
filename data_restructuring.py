@@ -7,8 +7,8 @@ import xml.etree.ElementTree as ET
 input_path = './data/'
 output_path = './resize_image/'
 
-res = int(os.environ.get("res"))
-max_images = int(os.environ.get("max_images"))
+res = int(os.environ.get("res" ,640))
+max_images = int(os.environ.get("max_images" ,10000))
 
 
 def resize_img(input_path, output_path, res, max_images=1000):

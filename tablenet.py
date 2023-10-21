@@ -20,8 +20,8 @@ import numpy as np
 import os
 import glob
 
-res= int(os.environ.get("res"))
-chunk_size = int(os.environ.get("chunk_size"))
+res= int(os.environ.get("res",640))
+chunk_size = int(os.environ.get("chunk_size",10000))
 
 #Model creation 
 
