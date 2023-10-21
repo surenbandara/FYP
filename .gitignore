@@ -1,6 +1,7 @@
 resize*/
 testing*/
 column_mask/
+row_mask/
 data/
 model*/
 model.*
