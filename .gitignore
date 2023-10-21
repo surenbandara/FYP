@@ -1,7 +1,8 @@
-resize_images/
+resize*/
 testing*/
 column_mask/
 data/
 model*/
+model.*
 prediction*/
 tab_model_env
