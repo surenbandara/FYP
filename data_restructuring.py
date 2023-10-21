@@ -118,12 +118,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
-                  column_xmax.append(int(int(float(x.text))*res/width)+2)
+                  column_xmax.append(int(int(float(x.text))*res/width)-2)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
-                  row_xmax.append(int(int(float(x.text))*res/width)+2)
+                  row_xmax.append(int(int(float(x.text))*res/width)-2)
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -134,12 +134,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
-                  column_ymax.append(int(int(float(x.text))*res/width)+2)
+                  column_ymax.append(int(int(float(x.text))*res/width)-2)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
-                  row_ymax.append(int(int(float(x.text))*res/width)+2)
+                  row_ymax.append(int(int(float(x.text))*res/width)-2)
 
 
 
