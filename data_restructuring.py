@@ -30,10 +30,10 @@ def resize_img(input_path, output_path, res, max_images=1000):
 
     pbar.close()  # Close the progress bar
 
-# Call the function to resize the first 1000 images
+# Call the function to resize
 resize_img(input_path, output_path, res, max_images)
 
-print("Image resizing completed for the first 10000 images.")
+print("Image resizing completed!.")
 
 
 # Creating an XML Parser
@@ -65,10 +65,15 @@ for file in os.listdir(path):
        table_xmax=[]
        table_ymax=[]
 
-       xmin=[]
-       ymin=[]
-       xmax=[]
-       ymax=[]
+       column_xmin=[]
+       column_ymin=[]
+       column_xmax=[]
+       column_ymax=[]
+
+       row_xmin=[]
+       row_ymin=[]
+       row_xmax=[]
+       row_ymax=[]
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -77,10 +82,15 @@ for file in os.listdir(path):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmin'):
                   table_xmin.append(int(int(float(x.text))*res/width))
-            elif ((name.text == "table column") or (name.text == "table row1")):
+            elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmin'):
-                  xmin.append(int(int(float(x.text))*res/width)+2)
+                  column_xmin.append(int(int(float(x.text))*res/width)+2)
+            
+            elif (name.text == "table row"):
+              for bnd in column.findall('bndbox'):
+                for x in bnd.findall('xmin'):
+                  row_xmin.append(int(int(float(x.text))*res/width)+2)
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -88,10 +98,15 @@ for file in os.listdir(path):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymin'):
                   table_ymin.append(int(int(float(x.text))*res/height))
-            elif ((name.text == "table column") or (name.text == "table row1")):
+            elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymin'):
-                  ymin.append(int(int(float(x.text))*res/height)+2)
+                  column_ymin.append(int(int(float(x.text))*res/width)+2)
+            
+            elif (name.text == "table row"):
+              for bnd in column.findall('bndbox'):
+                for x in bnd.findall('ymin'):
+                  row_ymin.append(int(int(float(x.text))*res/width)+2)
 
 
        for column in rootTag.findall('object'):
@@ -100,10 +115,15 @@ for file in os.listdir(path):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
                   table_xmax.append(int(int(float(x.text))*res/width))
-            elif ((name.text == "table column") or (name.text == "table row1")):
+            elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
-                  xmax.append(int(int(float(x.text))*res/width)-1)
+                  column_xmax.append(int(int(float(x.text))*res/width)+2)
+            
+            elif (name.text == "table row"):
+              for bnd in column.findall('bndbox'):
+                for x in bnd.findall('xmax'):
+                  row_xmax.append(int(int(float(x.text))*res/width)+2)
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -111,14 +131,21 @@ for file in os.listdir(path):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
                   table_ymax.append(int(int(float(x.text))*res/height))
-            elif (name.text == "table column" or name.text == "table row1"):
+            elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
-                  ymax.append(int(int(float(x.text))*res/height)-1)
+                  column_ymax.append(int(int(float(x.text))*res/width)+2)
+            
+            elif (name.text == "table row"):
+              for bnd in column.findall('bndbox'):
+                for x in bnd.findall('ymax'):
+                  row_ymax.append(int(int(float(x.text))*res/width)+2)
 
 
 
-       my_dict = dict({'filename': file_name.split("/")[-1].split(".")[0], 'Width': res, 'Height':res, 'Table_Xmin' :table_xmin , 'Table_Xmax' : table_xmax, 'Table_Ymin' :table_ymin , 'Table_Ymax' : table_ymax , 'Depth' : depth,'xmin':xmin,'ymin':ymin,'xmax':xmax,'ymax':ymax})
+       my_dict = dict({'filename': file_name.split("/")[-1].split(".")[0], 'Width': res, 'Height':res, 'Table_Xmin' :table_xmin , 'Table_Xmax' : table_xmax, 'Table_Ymin' :table_ymin , 'Table_Ymax' : table_ymax , 'Depth' : depth,
+                       'column_xmin':column_xmin,'column_ymin':column_ymin,'column_xmax': column_xmax,'column_ymax': column_ymax,
+                       'row_xmin':row_xmin,'row_ymin':row_ymin,'row_xmax': row_xmax,'row_ymax': row_ymax})
 
 
 
@@ -135,24 +162,32 @@ for i in data:
     width=i['Width']
     height=i['Height']
 
-    xmin=i['xmin']
-    ymin=i['ymin']
-    xmax=i['xmax']
-    ymax=i['ymax']
+    column_xmin=i['column_xmin']
+    column_ymin=i['column_ymin']
+    column_xmax=i['column_xmax']
+    column_ymax=i['column_ymax']
 
+    row_xmin=i['row_xmin']
+    row_ymin=i['row_ymin']
+    row_xmax=i['row_xmax']
+    row_ymax=i['row_ymax']
 
     column_mask = np.zeros((height, width), dtype=np.int32)
+    row_mask = np.zeros((height, width), dtype=np.int32)
 
     # Loop to create column masks
-    for j in range(0, len(xmin)):
-      column_mask[int(ymin[j]):int(ymax[j]), int(xmin[j]):int(xmax[j])] += 125
+    for j in range(0, len(column_xmin)):
+      column_mask[int(column_ymin[j]):int(column_ymax[j]), int(column_xmin[j]):int(column_xmax[j])] =255
+    
+    for i in range(0, len(row_xmin)):
+      row_mask[int(row_ymin[i]):int(row_ymax[i]), int(row_xmin[i]):int(row_xmax[i])] =255
 
-    column_mask[column_mask < 200 ] = 0
-    column_mask[column_mask >= 200] = 255
-
-    #For edge
-
-    #column_mask = table_mask - column_mask
 
     im_col = Image.fromarray(column_mask.astype(np.uint8),'L')
+    im_row = Image.fromarray(row_mask.astype(np.uint8),'L')
+
     im_col.save('./column_mask/'+ f + ".jpg")
+    im_row.save('./row_mask/'+ f + ".jpg")
+
+
+print("Resizing and masking is done!")
