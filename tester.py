@@ -64,32 +64,9 @@ def parse_image(img_path):
     image = tf.cast(image, tf.float32) / 255.0
     #image = tf.image.convert_image_dtype(image, tf.uint8)
 
-    # For one Image path:
-    # /content/drive/MyDrive/Marmot_data.zip/images/10.1.1.1.2006_3.jpeg
-    # Its corresponding row mask path is:
-    #  /content/drive/MyDrive/Marmot_data.zip/row_mask/10.1.1.1.2006_3.jpeg
-    # Its corresponding column mask path is:
-    #  /content/drive/MyDrive/Marmot_data.zip/column_mask/10.1.1.1.2006_3.jpeg
-
-    row_mask_path = tf.strings.regex_replace(img_path, "resize_image", "row_mask")
-    row_mask = tf.io.read_file(row_mask_path)
-
-    # The masks contain a class index for each pixels
-    row_mask = tf.image.decode_jpeg(row_mask, channels=1)
-    row_mask =tf.image.resize(row_mask, [res, res])
-    row_mask = tf.cast(row_mask, tf.float32) / 255.0
 
 
-    column_mask_path = tf.strings.regex_replace(img_path, "resize_image", "column_mask")
-    column_mask = tf.io.read_file(column_mask_path)
-
-    # The masks contain a class index for each pixels
-    column_mask = tf.image.decode_jpeg(column_mask, channels=1)
-    column_mask =tf.image.resize(column_mask, [res, res])
-    column_mask = tf.cast(column_mask, tf.float32) / 255.0
-
-
-    return image, {'column_mask':column_mask ,'row_mask':row_mask}
+    return image
 
 
 
@@ -108,7 +85,7 @@ def show_predictions(name=None , dataset=None, num=1, output_dir=None):
     """
 
     if dataset and output_dir:
-        for image in dataset.take(num):
+        for image  in dataset.take(num):
 
             pred_mask1, pred_mask2 = model1.predict(image, verbose=1)
             column_mask , row_mask = create_mask(pred_mask1, pred_mask2)
