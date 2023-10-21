@@ -1,0 +1,7 @@
+pytesseract
+tensorflow
+tqdm
+numpy
+matplotlib
+tensorflow-gpu
+tqdm
