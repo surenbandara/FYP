@@ -21,7 +21,7 @@ import os
 import glob
 
 res= int(os.environ.get("res",640))
-chunk_size = int(os.environ.get("chunk_size",10000))
+chunk_size = int(os.environ.get("chunk_size",100000))
 
 #Model creation 
 
