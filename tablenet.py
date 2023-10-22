@@ -92,7 +92,8 @@ row_mask = decoder_row(x)
 column_mask = decoder_column(x)
 
 
-model = Model(inputs=inputs,outputs=[ column_mask , row_mask],name="table_net")
+#model = Model(inputs=inputs,outputs=[ column_mask , row_mask],name="table_net")
+model = Model(inputs=inputs,outputs=[ column_mask ],name="table_net")
 
 ##################################################################################################
 
@@ -145,7 +146,8 @@ def parse_image(img_path):
     column_mask = tf.cast(column_mask, tf.float32) / 255.0
 
 
-    return image, {'column_mask':column_mask ,'row_mask':row_mask}
+    #return image, {'column_mask':column_mask ,'row_mask':row_mask}
+    return image, {'column_mask':column_mask }
 
 
 
@@ -198,10 +200,16 @@ test_dataset = dataset['test']
 
 losses = {
     "column_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-    "row_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
 }
 
-lossWeights = { "column_mask": 1.0 ,"row_mask": 1.0}
+# losses = {
+#     "column_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+#     "row_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+# }
+
+lossWeights = { "column_mask": 1.0 }
+
+#lossWeights = { "column_mask": 1.0 ,"row_mask": 1.0}
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001, epsilon=1e-08),
               loss=losses,

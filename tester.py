@@ -14,7 +14,23 @@ from PIL import Image
 model1 = load_model('model_Tablenet')
 res= int(os.environ.get('res' ,640 ))
 
-def create_mask(pred_mask1, pred_mask2):
+# def create_mask(pred_mask1, pred_mask2):
+
+
+#   """Return a filter mask with the top 1 predictions
+#     only.
+
+#   """
+
+#   pred_mask1 = tf.argmax(pred_mask1, axis=-1)
+#   pred_mask1 = tf.expand_dims(pred_mask1, axis=-1)
+
+#   pred_mask2 = tf.argmax(pred_mask2, axis=-1)
+#   pred_mask2 = tf.expand_dims(pred_mask2, axis=-1)
+#   return pred_mask1[0], pred_mask2[0]
+
+
+def create_mask(pred_mask1):
 
 
   """Return a filter mask with the top 1 predictions
@@ -25,9 +41,8 @@ def create_mask(pred_mask1, pred_mask2):
   pred_mask1 = tf.argmax(pred_mask1, axis=-1)
   pred_mask1 = tf.expand_dims(pred_mask1, axis=-1)
 
-  pred_mask2 = tf.argmax(pred_mask2, axis=-1)
-  pred_mask2 = tf.expand_dims(pred_mask2, axis=-1)
-  return pred_mask1[0], pred_mask2[0]
+ 
+  return pred_mask1[0]
 
 
 def load_img(path):
@@ -87,16 +102,19 @@ def show_predictions(name=None , dataset=None, num=1, output_dir=None):
     if dataset and output_dir:
         for image  in dataset.take(num):
 
-            pred_mask1, pred_mask2 = model1.predict(image, verbose=1)
-            column_mask , row_mask = create_mask(pred_mask1, pred_mask2)
+            #pred_mask1, pred_mask2 = model1.predict(image, verbose=1)
+            #column_mask , row_mask = create_mask(pred_mask1, pred_mask2)
+
+            pred_mask1 = model1.predict(image, verbose=1)
+            column_mask  = create_mask(pred_mask1)
 
             # Save output
 
             output_image_path_col = os.path.join(output_dir+"/column/", name)
             cv2.imwrite(output_image_path_col,np.array( tf.keras.preprocessing.image.array_to_img(column_mask.numpy())))
 
-            output_image_path_row = os.path.join(output_dir+"/row/", name)
-            cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(row_mask.numpy())))
+            #output_image_path_row = os.path.join(output_dir+"/row/", name)
+            #cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(row_mask.numpy())))
 
 
 
