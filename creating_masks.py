@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 res = int(os.environ.get("res" ,640))
 max_images = int(os.environ.get("max_images" ,100000))
-
+padding = int(os.environ.get("padding" ,4))
 
 # Creating an XML Parser
 
@@ -58,12 +58,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmin'):
-                  column_xmin.append(int(int(float(x.text))*res/width)+2)
+                  column_xmin.append(int(int(float(x.text))*res/width)+padding)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmin'):
-                  row_xmin.append(int(int(float(x.text))*res/width)+2)
+                  row_xmin.append(int(int(float(x.text))*res/width)+padding)
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -74,12 +74,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymin'):
-                  column_ymin.append(int(int(float(x.text))*res/height)+2)
+                  column_ymin.append(int(int(float(x.text))*res/height)+padding)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymin'):
-                  row_ymin.append(int(int(float(x.text))*res/height)+2)
+                  row_ymin.append(int(int(float(x.text))*res/height)+padding)
 
 
        for column in rootTag.findall('object'):
@@ -91,12 +91,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
-                  column_xmax.append(int(int(float(x.text))*res/width)-2)
+                  column_xmax.append(int(int(float(x.text))*res/width)-padding)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('xmax'):
-                  row_xmax.append(int(int(float(x.text))*res/width)-2)
+                  row_xmax.append(int(int(float(x.text))*res/width)-padding)
 
        for column in rootTag.findall('object'):
          for name in column.findall('name'):
@@ -107,12 +107,12 @@ for file in os.listdir(path):
             elif (name.text == "table column"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
-                  column_ymax.append(int(int(float(x.text))*res/height)-2)
+                  column_ymax.append(int(int(float(x.text))*res/height)-padding)
             
             elif (name.text == "table row"):
               for bnd in column.findall('bndbox'):
                 for x in bnd.findall('ymax'):
-                  row_ymax.append(int(int(float(x.text))*res/height)-2)
+                  row_ymax.append(int(int(float(x.text))*res/height)-padding)
 
 
 
@@ -127,10 +127,10 @@ for file in os.listdir(path):
 
 # Generating Masks for table and columns
 
-for i in data:
+# Initialize the progress bar
+for item in tqdm(data, desc="Processing"):
 
     f=i['filename']
-    print(f)
 
     width=i['Width']
     height=i['Height']
