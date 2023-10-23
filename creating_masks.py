@@ -128,7 +128,7 @@ for file in os.listdir(path):
 # Generating Masks for table and columns
 
 # Initialize the progress bar
-for item in tqdm(data, desc="Processing"):
+for i in tqdm(data, desc="Processing"):
 
     f=i['filename']
 
