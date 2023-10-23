@@ -21,7 +21,7 @@ def resize_image(image, max_dim=640):
   resized_image = cv2.resize(image, (int(width * scale_factor), int(height * scale_factor)))
 
   # Fill the rest with black.
-  padded_image = cv2.copyMakeBorder(resized_image, 0, max_dim - resized_image.shape[0], 0, max_dim - resized_image.shape[1], cv2.BORDER_CONSTANT, value=[0, 0, 0])
+  padded_image = cv2.copyMakeBorder(resized_image, 0, max_dim - resized_image.shape[0], 0, max_dim - resized_image.shape[1], cv2.BORDER_CONSTANT, value=[255, 255, 255])
 
   return padded_image
 
