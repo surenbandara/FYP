@@ -13,6 +13,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input, Concatenate, UpSampling2D
 from keras.applications.resnet import ResNet101
+from keras.applications.vgg19 import VGG19
 from keras.preprocessing import image
 from keras.layers import Input, Flatten, Dense
 from keras.models import Model
@@ -29,12 +30,12 @@ inputShape = (res,res, 3)
 
 
 inputs = Input(shape=inputShape, name='input')
-model_ResNet101_conv = ResNet101(input_tensor=inputs,weights='imagenet', include_top=False , pooling=None)
+model_ResNet101_conv = VGG19(input_tensor=inputs,weights='imagenet', include_top=False , pooling=None)
 model_ResNet101_conv.summary()
 
-conv3_block1_0_conv=model_ResNet101_conv.get_layer('conv3_block1_0_conv').output
+conv3_block1_0_conv=model_ResNet101_conv.get_layer('block3_pool').output
 print(conv3_block1_0_conv.get_shape)
-conv4_block1_0_conv=model_ResNet101_conv.get_layer('conv4_block1_0_conv').output
+conv4_block1_0_conv=model_ResNet101_conv.get_layer('block4_pool').output
 print(conv4_block1_0_conv.get_shape)
 
 x = model_ResNet101_conv.output
