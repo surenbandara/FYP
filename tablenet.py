@@ -23,7 +23,7 @@ import glob
 
 res= int(os.environ.get("res",640))
 chunk_size = int(os.environ.get("chunk_size",100000))
-EPOCHS = int(os.environ.get("chunk_size",2))
+EPOCHS = int(os.environ.get("epochs",2))
 
 #Model creation 
 
