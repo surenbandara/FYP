@@ -14,6 +14,7 @@ from PIL import Image
 
 chunk_size = int(os.environ.get("chunk_size",100000))
 EPOCHS = int(os.environ.get("epochs",2))
+res= int(os.environ.get("res",640))
 
 
 model = load_model('model_Tablenet')
