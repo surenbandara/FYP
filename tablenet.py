@@ -218,7 +218,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001, epsilon=1
               loss_weights=lossWeights)
 
 
-EPOCHS = 3
+EPOCHS = 2
 VAL_SUBSPLITS = 1
 VALIDATION_STEPS = test_size//BATCH_SIZE//VAL_SUBSPLITS
 
