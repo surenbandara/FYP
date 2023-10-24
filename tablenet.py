@@ -45,31 +45,8 @@ x = Dropout(0.8, name='block6_dropout1')(x)
 x = Conv2D(512,(1,1),activation = "relu", name = "conv2d_2")(x)
 x = Dropout(0.8, name='block6_dropout2')(x)
 
-#decoder for row mask
-def decoder_row(input_layer):
-
-  conv7_row = Conv2D(512, (1, 1), activation = 'relu', name='conv7_row')(input_layer)
-  conv7_row = Dropout(0.8, name='block7_dropout_row')(conv7_row)
-
-  conv8_row = Conv2D(512, (1, 1), activation = 'relu', name='conv8_row')(conv7_row)
-  conv8_row = UpSampling2D(size=(2, 2))(conv8_row)
-
-  concat1=Concatenate()([conv8_row,conv4_block1_0_conv])
-  concat1 = UpSampling2D(size=(2, 2))(concat1)
-
-  concat2=Concatenate()([concat1,conv3_block1_0_conv])
-  concat2 = UpSampling2D(size=(2,2),name='row_op')(concat2)
-
-  final = UpSampling2D(size=(2,2))(concat2)
-
-  final_layer = tf.keras.layers.Conv2DTranspose(3, 3, strides=2,padding='same', name='row_mask')
-
-  final = final_layer(final)
-
-  return final
-
-#decoder for column mask
-def decoder_column(input_layer):
+#decoder for mask
+def decoder(input_layer):
   conv7_col = Conv2D(512, (1, 1), activation = 'relu', name='conv7_col')(input_layer)
   conv7_col = Dropout(0.8, name='block7_dropout_col')(conv7_col)
 
@@ -80,22 +57,20 @@ def decoder_column(input_layer):
   concat1 = UpSampling2D(size=(2, 2))(concat1)
 
   concat2=Concatenate()([concat1,conv3_block1_0_conv])
-  concat2 = UpSampling2D(size=(2,2),name='column_op')(concat2)
+  concat2 = UpSampling2D(size=(2,2),name='op')(concat2)
 
   final = UpSampling2D(size=(2,2))(concat2)
 
-  final_layer = tf.keras.layers.Conv2DTranspose(3, 3, strides=2,padding='same', name='column_mask')
+  final_layer = tf.keras.layers.Conv2DTranspose(3, 3, strides=2,padding='same', name='mask')
 
   final = final_layer(final)
 
   return final
 
-row_mask = decoder_row(x)
-column_mask = decoder_column(x)
+mask= decoder(x)
 
 
-#model = Model(inputs=inputs,outputs=[ column_mask , row_mask],name="table_net")
-model = Model(inputs=inputs,outputs=[ column_mask ],name="table_net")
+model = Model(inputs=inputs,outputs=[ mask],name="table_net")
 
 ##################################################################################################
 
@@ -123,12 +98,6 @@ def parse_image(img_path):
     image = tf.cast(image, tf.float32) / 255.0
     #image = tf.image.convert_image_dtype(image, tf.uint8)
 
-    # For one Image path:
-    # /content/drive/MyDrive/Marmot_data.zip/images/10.1.1.1.2006_3.jpeg
-    # Its corresponding row mask path is:
-    #  /content/drive/MyDrive/Marmot_data.zip/row_mask/10.1.1.1.2006_3.jpeg
-    # Its corresponding column mask path is:
-    #  /content/drive/MyDrive/Marmot_data.zip/column_mask/10.1.1.1.2006_3.jpeg
 
     row_mask_path = tf.strings.regex_replace(img_path, "resize_image", "row_mask")
     row_mask = tf.io.read_file(row_mask_path)
@@ -148,8 +117,7 @@ def parse_image(img_path):
     column_mask = tf.cast(column_mask, tf.float32) / 255.0
 
 
-    #return image, {'column_mask':column_mask ,'row_mask':row_mask}
-    return image, {'column_mask':column_mask }
+    return image, {'row_mask':row_mask }
 
 
 
@@ -201,17 +169,12 @@ test_dataset = dataset['test']
 #Training Model
 
 losses = {
-    "column_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    "row_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
 }
 
-# losses = {
-#     "column_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-#     "row_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-# }
 
-lossWeights = { "column_mask": 1.0 }
+lossWeights = { "row_mask": 1.0 }
 
-#lossWeights = { "column_mask": 1.0 ,"row_mask": 1.0}
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001, epsilon=1e-08),
               loss=losses,
@@ -229,6 +192,6 @@ model_history = model.fit(train_dataset, epochs=EPOCHS,
                           validation_data=test_dataset,
                           )
 
-model.save('model_Tablenet')
+model.save('model_Tablenet_row')
 
 print("Model saved successfully!")
