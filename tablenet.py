@@ -192,6 +192,6 @@ model_history = model.fit(train_dataset, epochs=EPOCHS,
                           validation_data=test_dataset,
                           )
 
-model.save('model_Tablenet_row')
+model.save('row_model')
 
 print("Model saved successfully!")

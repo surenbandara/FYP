@@ -11,7 +11,7 @@ import tensorflow as tf
 from keras.models import load_model
 from PIL import Image
 
-model1 = load_model('model_Tablenet')
+model1 = load_model('column_model')
 res= int(os.environ.get('res' ,640 ))
 
 # def create_mask(pred_mask1, pred_mask2):
