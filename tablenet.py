@@ -117,7 +117,7 @@ def parse_image(img_path):
     column_mask = tf.cast(column_mask, tf.float32) / 255.0
 
 
-    return image, {'row_mask':row_mask }
+    return image, {'mask':row_mask }
 
 
 
@@ -169,11 +169,11 @@ test_dataset = dataset['test']
 #Training Model
 
 losses = {
-    "row_mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    "mask": tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
 }
 
 
-lossWeights = { "row_mask": 1.0 }
+lossWeights = { "mask": 1.0 }
 
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001, epsilon=1e-08),
