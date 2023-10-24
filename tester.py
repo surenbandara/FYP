@@ -11,7 +11,7 @@ import tensorflow as tf
 from keras.models import load_model
 from PIL import Image
 
-model1 = load_model('column_model')
+model1 = load_model('row_model')
 res= int(os.environ.get('res' ,640 ))
 
 # def create_mask(pred_mask1, pred_mask2):
@@ -114,7 +114,7 @@ def show_predictions(name=None , dataset=None, num=1, output_dir=None):
             # cv2.imwrite(output_image_path_col,np.array( tf.keras.preprocessing.image.array_to_img(column_mask.numpy())))
 
             output_image_path_row = os.path.join(output_dir+"/row/", name)
-            cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(row_mask.numpy())))
+            cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(column_mask.numpy())))
 
 
 
