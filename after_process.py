@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\column\images (1).png.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\column\images.png.jpg"
 
 # Load the image
 image = cv2.imread(image_path)
@@ -123,13 +123,27 @@ def show_imag(image_path ,vertical_positions):
     plt.axis('off')  # Optional: Turn off the axis labels and ticks
     plt.show()
 
+def show_plot_mid(mid):
+    # Create a plot
+    plt.plot(x, mid)
+    #plt.plot(x, ed2)
+
+    # Add labels and a title
+    plt.xlabel('Index')
+    plt.ylabel('Value')
+    plt.title('NumPy Array Data')
+
+    plt.legend()
+
+    # Show the plot
+    plt.show()
 
 # Create x-axis values as index numbers
 x = np.linspace(0, width - 1, width)
 
-mid=conv(mid ,1,0,5)
+mid=conv(mid ,4,0,10)
 mid=filtering(mid)
-mid=conv(mid ,1,0,5)
+mid=conv(mid ,4,0,7)
 mid=filtering(mid)
 mid=conv(mid ,5,0,7)
 mid=filtering(mid)
@@ -138,17 +152,4 @@ vertical_positions=column_indexes(mid)
 
 
 show_imag(image_path ,  vertical_positions )
-
-# # Create a plot
-# plt.plot(x, mid)
-# #plt.plot(x, ed2)
-
-# # Add labels and a title
-# plt.xlabel('Index')
-# plt.ylabel('Value')
-# plt.title('NumPy Array Data')
-
-# plt.legend()
-
-# # Show the plot
-# plt.show()
+#show_plot_mid(mid)

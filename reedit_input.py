@@ -28,6 +28,8 @@ def resize_image(image, max_dim=640):
 # Get the directory containing the images.
 image_dir = "D:\ENTC_7\FYP\FYP\eval_input"
 
+
+ind=0
 # Iterate over all the images in the directory.
 for image_file in os.listdir(image_dir):
 
@@ -37,6 +39,12 @@ for image_file in os.listdir(image_dir):
   # Resize the image.
   resized_image = resize_image(image)
 
+  name=str(ind)
+
   # Save the resized image as .jpg format.
-  cv2.imwrite(os.path.join(image_dir, f"{image_file}.jpg"), resized_image)
+  cv2.imwrite(os.path.join(image_dir, f"{name}.jpg"), resized_image)
+
+  os.remove(os.path.join(image_dir, f"{image_file}"))
+
+  ind+=1
 
