@@ -110,11 +110,11 @@ def show_predictions(name=None , dataset=None, num=1, output_dir=None):
 
             # Save output
 
-            output_image_path_col = os.path.join(output_dir+"/column/", name)
-            cv2.imwrite(output_image_path_col,np.array( tf.keras.preprocessing.image.array_to_img(column_mask.numpy())))
+            # output_image_path_col = os.path.join(output_dir+"/column/", name)
+            # cv2.imwrite(output_image_path_col,np.array( tf.keras.preprocessing.image.array_to_img(column_mask.numpy())))
 
-            #output_image_path_row = os.path.join(output_dir+"/row/", name)
-            #cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(row_mask.numpy())))
+            output_image_path_row = os.path.join(output_dir+"/row/", name)
+            cv2.imwrite(output_image_path_row,np.array( tf.keras.preprocessing.image.array_to_img(row_mask.numpy())))
 
 
 
