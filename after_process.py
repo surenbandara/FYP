@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\column\images.png.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_input\image1.jpg"
 
 # Load the image
 image = cv2.imread(image_path)

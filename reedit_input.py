@@ -39,7 +39,7 @@ for image_file in os.listdir(image_dir):
   # Resize the image.
   resized_image = resize_image(image)
 
-  name=str(ind)
+  name="image"+str(ind)
 
   # Save the resized image as .jpg format.
   cv2.imwrite(os.path.join(image_dir, f"{name}.jpg"), resized_image)
