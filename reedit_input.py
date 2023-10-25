@@ -44,7 +44,7 @@ for image_file in os.listdir(image_dir):
   # Save the resized image as .jpg format.
   cv2.imwrite(os.path.join(image_dir, f"{name}.jpg"), resized_image)
 
-  os.remove(os.path.join(image_dir, f"{image_file}"))
+  #os.remove(os.path.join(image_dir, f"{image_file}"))
 
   ind+=1
 

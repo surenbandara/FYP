@@ -3,14 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import matplotlib.image as mpimg
-import pytesseract
-from pytesseract import Output
 
 
-name = 'image0.jpg'
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\\"+name
-
-res=640
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image6.jpg"
+name = image_path.split("\\")[-1]
 
 # Load the image
 image = cv2.imread(image_path)
@@ -27,6 +23,8 @@ for y in range(height):
         if (not np.array_equal(pixel, replace_color) and not np.array_equal(pixel, replacement_color)) :
             image[y, x] = replace_color
 
+ed1 = np.zeros(width)
+ed2 = np.zeros(width)
 
 mid=np.zeros(width)
 
@@ -114,6 +112,37 @@ def column_indexes(data):
 
     return ind
 
+
+def show_imag(image_path ,vertical_positions):
+    # Load and display an image
+    # Draw vertical lines at specified positions
+    for pos in vertical_positions:
+        plt.axhline(y=pos, color='r', linestyle='--', linewidth=2)
+    img = mpimg.imread(image_path)  # Replace 'your_image_file.png' with your image file path
+
+    # Display the image
+    plt.imshow(img)
+    plt.axis('off')  # Optional: Turn off the axis labels and ticks
+    plt.show()
+
+def show_plot_mid(mid):
+    # Create a plot
+    plt.plot(x, mid)
+    #plt.plot(x, ed2)
+
+    # Add labels and a title
+    plt.xlabel('Index')
+    plt.ylabel('Value')
+    plt.title('NumPy Array Data')
+
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+
+
+
+
 # Calculate the new length (original length + 2 * (original length - 1))
 new_length =mid.size + 2 * (mid.size - 1)
 
@@ -125,112 +154,41 @@ stretched_array[::3] = mid
 
 mid=stretched_array
 
+# Create x-axis values as index numbers
+x = np.linspace(0, len(mid) - 1, len(mid))
+
 mid=conv(mid ,8,0,10)
 mid=filtering(mid)
+show_plot_mid(mid)
+
 mid=conv(mid ,5,0,15)
 mid=filtering(mid)
+show_plot_mid(mid)
+
 mid=conv(mid ,6,0,15)
 mid=filtering(mid)
+show_plot_mid(mid)
 
 mid=filtering(mid ,ratio=0.5)
 
-horizontal_positions=column_indexes(mid)
-
-horizontal=[]
-
-for i in horizontal_positions:
-    horizontal.append(int(i/3))
-
-
-######################################################################################
-
-
-
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\\"+name
-
-
-# Load the image
-image = cv2.imread(image_path)
-
-# Define the color values to replace and the replacement color
-replace_color = [255, 255, 255]
-replacement_color = [0, 0, 0]
-
-# Iterate over the image and replace pixels
-height, width, channels = image.shape
-for y in range(height):
-    for x in range(width):
-        pixel = image[y, x]
-        if (not np.array_equal(pixel, replace_color) and not np.array_equal(pixel, replacement_color)) :
-            image[y, x] = replace_color
-
-
-mid=np.zeros(width)
-
-white = [255, 255, 255]
-black = [0, 0, 0]
-
-for y in range(height):
-    current_colour=image[y, 0]
-    cur_x=0
-    check=False
-    for x in range(width):
-        if not (x==0):
-            pixel = image[y, x]
-
-            if (np.array_equal(black, current_colour) and np.array_equal(pixel, white)):
-
-                if not check:
-                    check=True
-                else:
-                    mid_pos = math.ceil((cur_x+x)/2)
-                    mid[mid_pos]+=1
-
-            if (not np.array_equal(pixel, current_colour)) :
-                current_colour=pixel
-                cur_x=x
-            
-
-mid=conv(mid ,6,0,10)
-mid=filtering(mid)
-mid=conv(mid ,4,0,10)
-mid=filtering(mid)
-mid=conv(mid ,5,0,7)
-mid=filtering(mid)
-
 vertical_positions=column_indexes(mid)
 
-##########################################################################
-# Load the image
-original_image = cv2.imread('D:\ENTC_7\FYP\FYP\input\\'+name)
+new=[]
 
-# Get the size of the image
-height, width, channels = image.shape
+for i in vertical_positions:
+    new.append(int(i/3))
 
-img_x=[0]
-for x in vertical_positions:
-    img_x.append(int(x*width/res))
-img_x.append(width-1)
-
-img_y=[0]
-for x in horizontal_positions:
-    img_y.append(int(y*height/res))
-img_y.append(height-1)
+#show_imag(image_path ,  new )
 
 
-def ocr_cropping(x1,x2,y1,y2,original_image):
-    # Crop the ROI from the original image
-    cropped_image = original_image[y1:y2, x1:x2]
-    # Convert the cropped image to grayscale
-    gray_cropped_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
 
-    # Use pytesseract to extract text from the cropped image
-    text = pytesseract.image_to_string(gray_cropped_image)
+image = cv2.imread('D:\ENTC_7\FYP\FYP\eval_input\\'+name)
 
-    # Print the extracted text
-    print("Extracted Text:")
-    print(text)
+for k in new:
+    cv2.line(image, (0, k), (image.shape[1], k), (255, 0, 0), 2)
 
-for y in range(0,len(img_y)-1):
-    for x in range(0,len(img_x)-1):
-        ocr_cropping(img_x[x-1],img_x[x],img_y[y-1],img_y[y],original_image)
+
+cv2.imwrite('D:\ENTC_7\FYP\FYP\outputs\\'+image_path.split("\\")[-1] ,image)
+
+
+
