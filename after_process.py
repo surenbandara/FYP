@@ -11,8 +11,6 @@ from transformers import TrOCRProcessor, TFVisionEncoderDecoderModel
 processor = TrOCRProcessor.from_pretrained("./microsoft/trocr-base-handwritten")
 model = TFVisionEncoderDecoderModel.from_pretrained('./microsoft/trocr-base-handwritten',from_pt=True)
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
-
 
 name = 'image0.jpg'
 image_path = ".\eval_output\\row\\"+name
