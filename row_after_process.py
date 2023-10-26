@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image6.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image0.jpg"
 name = image_path.split("\\")[-1]
 
 # Load the image
@@ -178,7 +178,7 @@ new=[]
 for i in vertical_positions:
     new.append(int(i/3))
 
-#show_imag(image_path ,  new )
+show_imag(image_path ,  new )
 
 
 

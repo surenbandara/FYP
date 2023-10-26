@@ -5,10 +5,17 @@ import math
 import matplotlib.image as mpimg
 import pytesseract
 from pytesseract import Output
+from PIL import Image
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+
+processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 
 name = 'image0.jpg'
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\\"+name
+image_path = ".\eval_output\\row\\"+name
 
 res=640
 
@@ -146,7 +153,7 @@ for i in horizontal_positions:
 
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\\"+name
+image_path = ".\eval_output\\column\\"+name
 
 
 # Load the image
@@ -202,25 +209,46 @@ vertical_positions=column_indexes(mid)
 
 ##########################################################################
 # Load the image
-original_image = cv2.imread('D:\ENTC_7\FYP\FYP\input\\'+name)
+original_image = cv2.imread('.\input\\'+name)
 
 # Get the size of the image
-height, width, channels = image.shape
+height, width, channels = original_image.shape
 
+ratio = max(height,width)/640
 img_x=[0]
 for x in vertical_positions:
-    img_x.append(int(x*width/res))
+    img_x.append(int(x*ratio))
 img_x.append(width-1)
 
 img_y=[0]
-for x in horizontal_positions:
-    img_y.append(int(y*height/res))
+for y in horizontal:
+    img_y.append(int(y*ratio))
 img_y.append(height-1)
 
 
+print(img_x ,  vertical_positions ,width)
+print(img_y , horizontal , height)
+
+
 def ocr_cropping(x1,x2,y1,y2,original_image):
+
     # Crop the ROI from the original image
-    cropped_image = original_image[y1:y2, x1:x2]
+    cropped_image = original_image[y1:y2 ,x1:x2]
+
+    cropped_image_rgb = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB)
+
+    # Convert to a PIL image
+    pil_image = Image.fromarray(cropped_image_rgb)
+
+    pixel_values = processor(pil_image, return_tensors="pt").pixel_values
+    generated_ids = model.generate(pixel_values)
+
+    generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+    # Display the cropped image using Pillow
+    # cropped_image_pil = Image.fromarray(cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB))
+    # cropped_image_pil.show()
+    
     # Convert the cropped image to grayscale
     gray_cropped_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
 
@@ -229,8 +257,8 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
 
     # Print the extracted text
     print("Extracted Text:")
-    print(text)
+    print(generated_text)
 
 for y in range(0,len(img_y)-1):
     for x in range(0,len(img_x)-1):
-        ocr_cropping(img_x[x-1],img_x[x],img_y[y-1],img_y[y],original_image)
+        ocr_cropping(img_x[x],img_x[x+1],img_y[y],img_y[y+1],original_image)
