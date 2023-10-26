@@ -6,10 +6,10 @@ import matplotlib.image as mpimg
 import pytesseract
 from pytesseract import Output
 from PIL import Image
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+from transformers import TFOCRProcessor, TFVisionEncoderDecoderModel
 
-processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
-model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
+processor = TFOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+model = TFVisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
