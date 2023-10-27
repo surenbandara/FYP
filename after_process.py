@@ -12,7 +12,7 @@ import os
 ocr = PaddleOCR(use_angle_cls=True, lang='en' , use_gpu=False) # need to run only once to download and load model into memory
 
 name = 'image0.jpg'
-image_path = "./eval_output/row/"+name
+image_path = ".\eval_output\\row\\"+name
 
 res=640
 
@@ -158,7 +158,7 @@ for i in horizontal_positions:
 
 
 
-image_path = "./eval_output/column/"+name
+image_path = ".\eval_output\\column\\"+name
 
 
 # Load the image
@@ -224,22 +224,20 @@ vertical_positions=column_indexes(mid)
 
 ##########################################################################
 # Load the image
-original_image = cv2.imread('./input/'+name)
+original_image = cv2.imread('.\input\\'+name)
 
 # Get the size of the image
 height, width, channels = original_image.shape
 
-ratio_width = width/640
-ratio_height = height/640
-
+ratio = max(height,width)/640
 img_x=[0]
 for x in vertical_positions:
-    img_x.append(int(x*ratio_width))
+    img_x.append(int(x*ratio))
 img_x.append(width-1)
 
 img_y=[0]
 for y in horizontal:
-    img_y.append(int(y*ratio_height))
+    img_y.append(int(y*ratio))
 img_y.append(height-1)
 
 
