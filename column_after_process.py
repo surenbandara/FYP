@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\image2.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\image5.jpg"
 name = image_path.split("\\")[-1]
 
 
@@ -55,11 +55,11 @@ for y in range(height):
             
 
 
-def filtering(mid):
+def filtering(mid ,ratio=1):
     # Calculate the mean
     mean = np.mean(mid)
     # Calculate the standard deviation
-    std_dev = np.std(mid)
+    std_dev = np.std(mid)*ratio
 
 
     print("Mean:", mean)
@@ -143,12 +143,21 @@ def show_plot_mid(mid):
 # Create x-axis values as index numbers
 x = np.linspace(0, width - 1, width)
 
-mid=conv(mid ,6,0,10)
+show_plot_mid(mid)
+
+
+mid=filtering(mid,ratio=1.5)
+show_plot_mid(mid)
+mid=conv(mid ,8,0,3)
+show_plot_mid(mid)
+
+mid=conv(mid ,7,0,5)
 mid=filtering(mid)
-mid=conv(mid ,4,0,10)
-mid=filtering(mid)
+show_plot_mid(mid)
+
 mid=conv(mid ,5,0,7)
 mid=filtering(mid)
+show_plot_mid(mid)
 
 vertical_positions=column_indexes(mid)
 
@@ -156,7 +165,7 @@ vertical_positions=column_indexes(mid)
 #show_imag(image_path ,  vertical_positions )
 #show_plot_mid(mid)
 
-image = cv2.imread('D:\ENTC_7\FYP\FYP\outputs\\'+name)
+image = cv2.imread('D:\ENTC_7\FYP\FYP\eval_input\\'+name)
 for k in vertical_positions:
     cv2.line(image, (k, 0), (k, image.shape[1]), (255, 0, 0), 2)
 cv2.imwrite('D:\ENTC_7\FYP\FYP\outputs\\'+name,image)

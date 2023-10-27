@@ -6,11 +6,9 @@ import matplotlib.image as mpimg
 import pytesseract
 from pytesseract import Output
 from PIL import Image
-from transformers import TrOCRProcessor, TFVisionEncoderDecoderModel
+from paddleocr import PaddleOCR,draw_ocr
 
-processor = TrOCRProcessor.from_pretrained("./microsoft/trocr-base-handwritten")
-model = TFVisionEncoderDecoderModel.from_pretrained('./microsoft/trocr-base-handwritten',from_pt=True)
-
+ocr = PaddleOCR(use_angle_cls=True, lang='en' , use_gpu=False) # need to run only once to download and load model into memory
 
 name = 'image0.jpg'
 image_path = ".\eval_output\\row\\"+name
@@ -229,7 +227,7 @@ print(img_y , horizontal , height)
 
 
 def ocr_cropping(x1,x2,y1,y2,original_image):
-
+    global ocr
     # Crop the ROI from the original image
     cropped_image = original_image[y1:y2 ,x1:x2]
 
@@ -238,25 +236,18 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
     # Convert to a PIL image
     pil_image = Image.fromarray(cropped_image_rgb)
 
-    pixel_values = processor(pil_image, return_tensors="pt").pixel_values
-    generated_ids = model.generate(pixel_values)
+    result = ocr.ocr(pil_image, cls=True)
+    for idx in range(len(result)):
+        res = result[idx]
+        for line in res:
+            print(line)
+            row.append(list(line[-1])[0])
 
-    generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-
-    # Display the cropped image using Pillow
-    # cropped_image_pil = Image.fromarray(cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB))
-    # cropped_image_pil.show()
-    
-    # Convert the cropped image to grayscale
-    gray_cropped_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
-
-    # Use pytesseract to extract text from the cropped image
-    text = pytesseract.image_to_string(gray_cropped_image)
-
-    # Print the extracted text
-    print("Extracted Text:")
-    print(generated_text)
-
+table=[]
 for y in range(0,len(img_y)-1):
+    row=[]
     for x in range(0,len(img_x)-1):
         ocr_cropping(img_x[x],img_x[x+1],img_y[y],img_y[y+1],original_image)
+    table.append(row)
+
+print(table)
