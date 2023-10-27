@@ -247,17 +247,17 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
     global ocr
     # Crop the ROI from the original image
     cropped_image = original_image[y1:y2 ,x1:x2]
-
-    cropped_image_rgb = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB)
-
-    # Convert to a PIL image
-    #pil_image = Image.fromarray(cropped_image_rgb)
-
-    # Save the cropped cv2 image as a temporary file
-    cv2.imwrite("temp_image.png", cropped_image_rgb)
-
-    result = ocr.ocr("temp_image.png", cls=True)
     try:
+        cropped_image_rgb = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB)
+
+        # Convert to a PIL image
+        #pil_image = Image.fromarray(cropped_image_rgb)
+
+        # Save the cropped cv2 image as a temporary file
+        cv2.imwrite("temp_image.png", cropped_image_rgb)
+
+        result = ocr.ocr("temp_image.png", cls=True)
+    
         for idx in range(len(result)):
             res = result[idx]
             for line in res:
