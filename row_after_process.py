@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image1.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image3.jpg"
 name = image_path.split("\\")[-1]
 
 # Load the image
@@ -159,19 +159,19 @@ mid=stretched_array
 # Create x-axis values as index numbers
 x = np.linspace(0, len(mid) - 1, len(mid))
 
-#mid=conv(mid ,8,0,10)
+mid=conv(mid ,8,0,10)
 mid=filtering(mid,ratio=1)
 show_plot_mid(mid)
 
-mid=conv(mid ,5,0,15)
+#mid=conv(mid ,5,0,15)
 mid=filtering(mid,ratio=1)
 show_plot_mid(mid)
 
 mid=conv(mid ,6,0,15)
-mid=filtering(mid ,ratio=0.8)
+mid=filtering(mid ,ratio=1)
 show_plot_mid(mid)
 
-mid=filtering(mid ,ratio=1)
+#mid=filtering(mid ,ratio=1)
 
 vertical_positions=column_indexes(mid)
 
