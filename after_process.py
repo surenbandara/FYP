@@ -7,6 +7,7 @@ import pytesseract
 from pytesseract import Output
 from PIL import Image
 from paddleocr import PaddleOCR,draw_ocr
+import os
 
 ocr = PaddleOCR(use_angle_cls=True, lang='en' , use_gpu=False) # need to run only once to download and load model into memory
 
@@ -234,14 +235,20 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
     cropped_image_rgb = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB)
 
     # Convert to a PIL image
-    pil_image = Image.fromarray(cropped_image_rgb)
+    #pil_image = Image.fromarray(cropped_image_rgb)
 
-    result = ocr.ocr(pil_image, cls=True)
+    # Save the cropped cv2 image as a temporary file
+    cv2.imwrite("temp_image.png", cropped_image_rgb)
+
+    result = ocr.ocr("temp_image.png", cls=True)
     for idx in range(len(result)):
         res = result[idx]
         for line in res:
             print(line)
             row.append(list(line[-1])[0])
+
+    # Remove the temporary image file
+    os.remove('temp_image.png')
 
 table=[]
 for y in range(0,len(img_y)-1):
