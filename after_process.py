@@ -262,11 +262,13 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
             res = result[idx]
             for line in res:
                 row.append(list(line[-1])[0])
+
+        # Remove the temporary image file
+        os.remove('temp_image.png')
     except:
         None
 
-    # Remove the temporary image file
-    os.remove('temp_image.png')
+    
 
 table=[]
 for y in range(0,len(img_y)-1):
