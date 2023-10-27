@@ -129,14 +129,22 @@ stretched_array[::3] = mid
 
 mid=stretched_array
 
-mid=conv(mid ,8,0,10)
-mid=filtering(mid)
-mid=conv(mid ,5,0,15)
-mid=filtering(mid)
-mid=conv(mid ,6,0,15)
-mid=filtering(mid)
+# mid=conv(mid ,8,0,10)
+# mid=filtering(mid)
+# mid=conv(mid ,5,0,15)
+# mid=filtering(mid)
+# mid=conv(mid ,6,0,15)
+# mid=filtering(mid)
 
-mid=filtering(mid ,ratio=0.5)
+# mid=filtering(mid ,ratio=0.5)
+
+
+mid=conv(mid ,8,0,10)
+mid=filtering(mid,ratio=1)
+mid=filtering(mid,ratio=1)
+mid=conv(mid ,6,0,15)
+mid=filtering(mid ,ratio=1)
+
 
 horizontal_positions=column_indexes(mid)
 
@@ -195,12 +203,22 @@ for y in range(height):
                 cur_x=x
             
 
-mid=conv(mid ,6,0,10)
+# mid=conv(mid ,6,0,10)
+# mid=filtering(mid)
+# mid=conv(mid ,4,0,10)
+# mid=filtering(mid)
+# mid=conv(mid ,5,0,7)
+# mid=filtering(mid)
+
+mid=filtering(mid,ratio=1.5)
+mid=conv(mid ,8,0,3)
+
+mid=conv(mid ,7,0,5)
 mid=filtering(mid)
-mid=conv(mid ,4,0,10)
-mid=filtering(mid)
+
 mid=conv(mid ,5,0,7)
 mid=filtering(mid)
+
 
 vertical_positions=column_indexes(mid)
 
