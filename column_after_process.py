@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\image0.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\column\image2.jpg"
 name = image_path.split("\\")[-1]
 
 
@@ -153,8 +153,8 @@ mid=filtering(mid)
 vertical_positions=column_indexes(mid)
 
 
-show_imag(image_path ,  vertical_positions )
-show_plot_mid(mid)
+#show_imag(image_path ,  vertical_positions )
+#show_plot_mid(mid)
 
 image = cv2.imread('D:\ENTC_7\FYP\FYP\outputs\\'+name)
 for k in vertical_positions:

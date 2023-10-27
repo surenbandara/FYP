@@ -18,12 +18,13 @@ def resize_image(image, max_dim=640):
   scale_factor = max_dim / max(height, width)
 
   # Resize the image.
-  resized_image = cv2.resize(image, (int(width * scale_factor), int(height * scale_factor)))
+  #resized_image = cv2.resize(image, (int(width * scale_factor), int(height * scale_factor)))
+  resized_image = cv2.resize(image, (640, 640))
 
   # Fill the rest with black.
-  padded_image = cv2.copyMakeBorder(resized_image, 0, max_dim - resized_image.shape[0], 0, max_dim - resized_image.shape[1], cv2.BORDER_CONSTANT, value=[255, 255, 255])
+  #padded_image = cv2.copyMakeBorder(resized_image, 0, max_dim - resized_image.shape[0], 0, max_dim - resized_image.shape[1], cv2.BORDER_CONSTANT, value=[255, 255, 255])
 
-  return padded_image
+  return resized_image
 
 # Get the directory containing the images.
 image_dir = "D:\ENTC_7\FYP\FYP\eval_input"

@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image0.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image1.jpg"
 name = image_path.split("\\")[-1]
 
 # Load the image
@@ -60,6 +60,8 @@ def filtering(mid ,ratio=1):
     mean = np.mean(mid)
     # Calculate the standard deviation
     std_dev = np.std(mid)*ratio
+
+    std_dev=std_dev
 
 
     print("Mean:", mean)
@@ -157,19 +159,19 @@ mid=stretched_array
 # Create x-axis values as index numbers
 x = np.linspace(0, len(mid) - 1, len(mid))
 
-mid=conv(mid ,8,0,10)
-mid=filtering(mid)
+#mid=conv(mid ,8,0,10)
+mid=filtering(mid,ratio=1)
 show_plot_mid(mid)
 
 mid=conv(mid ,5,0,15)
-mid=filtering(mid)
+mid=filtering(mid,ratio=1)
 show_plot_mid(mid)
 
 mid=conv(mid ,6,0,15)
-mid=filtering(mid)
+mid=filtering(mid ,ratio=0.8)
 show_plot_mid(mid)
 
-mid=filtering(mid ,ratio=0.5)
+mid=filtering(mid ,ratio=1)
 
 vertical_positions=column_indexes(mid)
 
