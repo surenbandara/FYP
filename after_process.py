@@ -3,8 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import matplotlib.image as mpimg
-import pytesseract
-from pytesseract import Output
 from PIL import Image
 from paddleocr import PaddleOCR,draw_ocr
 import os
@@ -12,7 +10,7 @@ import os
 ocr = PaddleOCR(use_angle_cls=True, lang='en' , use_gpu=False) # need to run only once to download and load model into memory
 
 name = 'image0.jpg'
-image_path = ".\eval_output\\row\\"+name
+image_path = "./eval_output/row/"+name
 
 res=640
 
@@ -158,7 +156,7 @@ for i in horizontal_positions:
 
 
 
-image_path = ".\eval_output\\column\\"+name
+image_path = "./eval_output/column/"+name
 
 
 # Load the image
@@ -224,7 +222,7 @@ vertical_positions=column_indexes(mid)
 
 ##########################################################################
 # Load the image
-original_image = cv2.imread('.\input\\'+name)
+original_image = cv2.imread('./input/'+name)
 
 # Get the size of the image
 height, width, channels = original_image.shape
