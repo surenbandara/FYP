@@ -6,10 +6,10 @@ import matplotlib.image as mpimg
 import pytesseract
 from pytesseract import Output
 from PIL import Image
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+from transformers import TrOCRProcessor, TFVisionEncoderDecoderModel
 
 processor = TrOCRProcessor.from_pretrained("./microsoft/trocr-base-handwritten")
-model = VisionEncoderDecoderModel.from_pretrained('./microsoft/trocr-base-handwritten',from_pt=True)
+model = TFVisionEncoderDecoderModel.from_pretrained('./microsoft/trocr-base-handwritten',from_pt=True)
 
 
 name = 'image0.jpg'
