@@ -5,7 +5,7 @@ import math
 import matplotlib.image as mpimg
 
 
-image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image0.jpg"
+image_path = "D:\ENTC_7\FYP\FYP\eval_output\\row\image4.jpg"
 name = image_path.split("\\")[-1]
 
 # Load the image

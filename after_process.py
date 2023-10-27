@@ -260,7 +260,6 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
     for idx in range(len(result)):
         res = result[idx]
         for line in res:
-            print(line)
             row.append(list(line[-1])[0])
 
     # Remove the temporary image file
