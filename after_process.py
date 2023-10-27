@@ -257,10 +257,13 @@ def ocr_cropping(x1,x2,y1,y2,original_image):
     cv2.imwrite("temp_image.png", cropped_image_rgb)
 
     result = ocr.ocr("temp_image.png", cls=True)
-    for idx in range(len(result)):
-        res = result[idx]
-        for line in res:
-            row.append(list(line[-1])[0])
+    try:
+        for idx in range(len(result)):
+            res = result[idx]
+            for line in res:
+                row.append(list(line[-1])[0])
+    except:
+        None
 
     # Remove the temporary image file
     os.remove('temp_image.png')
