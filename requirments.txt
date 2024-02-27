@@ -1,0 +1,11 @@
+img2table
+pytesseract
+pdf2image
+tabulate
+pandas 
+git+https://github.com/openai/whisper.git
+ffmpeg
+fpdf
+reportlab 
+docx2pdf
+Spire.Presentation
