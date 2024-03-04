@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 
-from new_.FYP.extractor import Extractor
+from extractor import Extractor
 
 app = Flask(__name__)
 
