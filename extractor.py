@@ -457,18 +457,18 @@ class Extractor:
      
 
 #ocr = TesseractOCR(n_threads=1, lang="eng")
-csv_path = "SampleCSVFile_2kb.csv"
-doc_path = "AutoRecovery save of Document1.docx"
-pdf_path = "fssr_2013e.pdf"
-pptx_path = "Front Page.pptx"
-audio_path = "engm1.wav"
-output = "example.txt"
+# csv_path = "SampleCSVFile_2kb.csv"
+# doc_path = "AutoRecovery save of Document1.docx"
+# pdf_path = "fssr_2013e.pdf"
+# pptx_path = "Front Page.pptx"
+# audio_path = "engm1.wav"
+# output = "example.txt"
 
 
-init()
-#csv_extractor(csv_path,output)
-#pdf_extractor(pdf_path,output)
-#doc_extractor(doc_path,output)
-#pptx_extractor(pptx_path,output)
-audio_extractor(audio_path,output)
+# init()
+# #csv_extractor(csv_path,output)
+# #pdf_extractor(pdf_path,output)
+# #doc_extractor(doc_path,output)
+# #pptx_extractor(pptx_path,output)
+# audio_extractor(audio_path,output)
 
