@@ -23,7 +23,7 @@ from spire.presentation import *
 from spire.presentation.common import *
 
 
-#import layoutparser as lp
+import layoutparser as lp
 import cv2
 import pytesseract
 from PIL import Image
@@ -37,15 +37,14 @@ class Extractor:
     def __init__(self):
         self.create_folder("temp")
         # Load the LayoutParser model
-        # self.layout_model = lp.PaddleDetectionLayoutModel(
-        #     config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
-        #     threshold=0.5,
-        #     label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"},
-        #     enforce_cpu=False,
-        #     enable_mkldnn=True
-        # )
+        self.layout_model = lp.PaddleDetectionLayoutModel(
+            config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
+            threshold=0.5,
+            label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"},
+            enforce_cpu=False,
+            enable_mkldnn=True
+        )
 
-        self.layout_model = ""
 
         self.feature_extractor = DetrFeatureExtractor()
         self.structure_model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-structure-recognition")
@@ -59,6 +58,7 @@ class Extractor:
 
         if(extension in ["jpg","png" , "jpeg"]):
             return self.image_extractor(path)
+            #return self.doc_extractor(path)
         
         elif(extension in ["docx","doc"]):
             return self.doc_extractor(path)
@@ -224,7 +224,7 @@ class Extractor:
     def pptx_extractor(self,pptx_path):
         name = pptx_path.split("\\")[-1].split(".")[0]+".pdf"
         self.convert_pptx_to_pdf(pptx_path, "temp\\"+name)
-        text = self.pdf_extractor("temp\\"+name ,output)
+        text = self.pdf_extractor("temp\\"+name)
         self.delete_file("temp\\"+name)
         return text
 

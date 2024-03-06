@@ -31,7 +31,7 @@ def upload_file():
     filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(filename)
 
-    return jsonify({'message': 'File uploaded successfully', 'txt': extractor.extractor(os.path.join(app.config['UPLOAD_FOLDER'], filename))})
+    return jsonify({'message': 'File uploaded successfully', 'txt': extractor.extractor( filename)})
 
 if __name__ == '__main__':
     app.run(debug=True)
