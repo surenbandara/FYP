@@ -17,6 +17,7 @@ import csv
 import whisper
 from fpdf import FPDF
 
+from spire.doc import FileFormat as FPdoc
 from spire.doc import *
 from spire.doc.common import *
 
@@ -210,7 +211,7 @@ class Extractor:
 
         self.document.LoadFromFile(rf"{docx_file}")
 
-        self.document.SaveToFile(pdf_file, FileFormat.PDF)
+        self.document.SaveToFile(pdf_file, FPdoc.PDF)
         self.document.Close()
 
     def doc_extractor(self,doc_path):
