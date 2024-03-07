@@ -434,21 +434,39 @@ class Extractor:
         json_data_list = []
 
         for page_number in range(len(doc)):
-            json_data=self.pdf_page_to_json(doc, page_number)
-            json_data = json.loads(json_data)
-            json_data_list.append(json_data)
-            ava = self.squ_ava_fac(json_data)
-            if(ava!=0) :
-                get_ava+=ava
-                ind+=1
+            text = doc[page_number].get_text()
+            if not text:
 
-            
-        wid_fac = (get_ava/ind)**0.5
+                page = doc.load_page(page_number)
+                pix = page.get_pixmap()
+                image = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                text = pytesseract.image_to_string(image)
+                txt_content += text + "\n"
+                json_data = {"ocr":True ,"text":txt_content}
+
+            else:
+                json_data=self.pdf_page_to_json(doc, page_number)
+                json_data = json.loads(json_data)
+                json_data["ocr"]=False
+                json_data_list.append(json_data)
+                ava = self.squ_ava_fac(json_data)
+                if(ava!=0) :
+                    get_ava+=ava
+                    ind+=1
+
+        try:   
+            wid_fac = (get_ava/ind)**0.5
+
+        except:
+            wid_fac = 0
 
         print(wid_fac)
 
         for json_data in json_data_list:
-            txt = self.json_to_text(json_data,wid_fac)
+            if(json_data["ocr"]):
+                txt = json_data["text"]
+            else:
+                txt = self.json_to_text(json_data,wid_fac)
 
             txt_content +=txt
 
@@ -456,19 +474,5 @@ class Extractor:
         return txt_content
      
 
-#ocr = TesseractOCR(n_threads=1, lang="eng")
-# csv_path = "SampleCSVFile_2kb.csv"
-# doc_path = "AutoRecovery save of Document1.docx"
-# pdf_path = "fssr_2013e.pdf"
-# pptx_path = "Front Page.pptx"
-# audio_path = "engm1.wav"
-# output = "example.txt"
 
-
-# init()
-# #csv_extractor(csv_path,output)
-# #pdf_extractor(pdf_path,output)
-# #doc_extractor(doc_path,output)
-# #pptx_extractor(pptx_path,output)
-# audio_extractor(audio_path,output)
 
