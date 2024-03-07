@@ -208,7 +208,7 @@ class Extractor:
     #Doc extractor
     def convert_docx_to_pdf(self,docx_file, pdf_file):
 
-        self.document.LoadFromFile(docx_file)
+        self.document.LoadFromFile(r"{docx_file}")
 
         self.document.SaveToFile(pdf_file, FileFormat.PDF)
         self.document.Close()
