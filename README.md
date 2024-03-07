@@ -12,3 +12,11 @@ To use Extraction.py, follow the steps below:
 
    ```bash
    conda create --name extraction_env python=3.8
+
+2. **Install Requirements:**
+
+    Activate the created environment and install the required packages listed in the requirements.txt file.
+
+    ```bash
+    conda activate extraction_env
+    pip install -r requirements.txt
