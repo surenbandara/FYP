@@ -254,7 +254,7 @@ class Extractor:
     #CSV extractor
     def read_csv_and_format(self, csv_file):
         # Read CSV file
-        with open(csv_file, 'r') as file:
+        with open(csv_file, 'r' ,encoding='ISO-8859-1') as file:
             reader = csv.reader(file)
             data = list(reader)
 
