@@ -14,4 +14,9 @@ def get_file_paths(directory):
 # Example usage:
 directory_path = "test"
 files = get_file_paths(directory_path)
-print(files)
+
+extractor = Extractor()
+
+for file in files:
+    print(file)
+    print(extractor.extractor(file))
