@@ -17,7 +17,8 @@ import csv
 import whisper
 from fpdf import FPDF
 
-from docx2pdf import convert
+from spire.doc import *
+from spire.doc.common import *
 
 from spire.presentation import *
 from spire.presentation.common import *
@@ -49,6 +50,12 @@ class Extractor:
         self.feature_extractor = DetrFeatureExtractor()
         self.structure_model = TableTransformerForObjectDetection.from_pretrained("microsoft/table-transformer-structure-recognition")
         self.label_dict = self.structure_model.config.id2label
+
+
+         # Create a Presentation object
+        self.presentation = Presentation()
+        # Create a Document object
+        self.document = Document()
 
 
     #service function
@@ -200,25 +207,28 @@ class Extractor:
 
     #Doc extractor
     def convert_docx_to_pdf(self,docx_file, pdf_file):
-        convert(docx_file, pdf_file)
+
+        self.document.LoadFromFile(docx_file)
+
+        self.document.SaveToFile(pdf_file, FileFormat.PDF)
+        self.document.Close()
 
     def doc_extractor(self,doc_path):
         name = doc_path.split("\\")[-1].split(".")[0]+".pdf"
         self.convert_docx_to_pdf(doc_path, "temp\\"+name)
-        text = self.pdf_extractor("temp\\"+name ,output)
+        text = self.pdf_extractor("temp\\"+name )
         self.delete_file("temp\\"+name)
         return text
     
     #PPTX extractor
     def convert_pptx_to_pdf(self,pptx_path, pdf_file):
 
-        # Create a Presentation object
-        presentation = Presentation()
-        presentation.LoadFromFile(pptx_path)
+       
+        self.presentation.LoadFromFile(pptx_path)
 
         # Convert the presentation to PDF format
-        presentation.SaveToFile(pdf_file, FileFormat.PDF)
-        presentation.Dispose()
+        self.presentation.SaveToFile(pdf_file, FileFormat.PDF)
+        self.presentation.Dispose()
         print("Convertion done")
 
     def pptx_extractor(self,pptx_path):

@@ -7,8 +7,9 @@ git+https://github.com/openai/whisper.git
 ffmpeg-python
 fpdf
 reportlab 
-docx2pdf
+Spire.Doc
 Spire.Presentation
+plum-dispatch==1.7.4
 layoutparser @ https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
 paddlepaddle
 paddleocr>=2.0.1
