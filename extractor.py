@@ -77,7 +77,7 @@ class Extractor:
         elif(extension in ["wav","mp3"]):
             return self.audio_extractor(path)
         
-        elif(extension in ["csv" , "xlsx" , "xls"]):
+        elif(extension in ["csv"]):
             return self.csv_extractor(path)
         
         elif(extension in [ "xlsx"]):
