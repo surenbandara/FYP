@@ -20,3 +20,5 @@ extractor = Extractor()
 for file in files:
     print(file)
     print(extractor.extractor(file))
+
+
