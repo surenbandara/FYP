@@ -516,3 +516,4 @@ class Extractor:
         return txt_content
      
 
+    def get_path():

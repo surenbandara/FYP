@@ -17,3 +17,4 @@ tesseract
 transformers
 timm
 flask
+xlrd>= 2.0.1
